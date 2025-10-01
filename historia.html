@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Consultorio — Historia clínica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="app.css" />
+  <style>
+    :root{ --bg:#f6f7fb; --paper:#fff; --line:#e6e9ef; --brand:#0d47a1; --muted:#6b7280; }
+    body{ margin:0; background:var(--bg); color:#1f2937; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+
+    /* NAV */
+    .topnav{ position:sticky; top:0; z-index:10; background:#0d47a1; color:#fff; padding:10px 14px; box-shadow:0 2px 8px rgba(0,0,0,.15); }
+    .topnav .wrap{ max-width:1040px; margin:0 auto; display:flex; align-items:center; gap:16px; }
+    .topnav .brand{ font-weight:800; }
+    .topnav nav{ margin-left:auto; display:flex; gap:10px; }
+    .topnav a{ color:#dbeafe; text-decoration:none; padding:6px 10px; border-radius:8px; }
+    .topnav a:hover{ background:#0b3a84; }
+
+    /* Layout */
+    .shell{ max-width:1040px; margin:22px auto 30px; padding:0 12px; display:grid; grid-template-columns:320px 1fr; gap:16px; }
+    @media (max-width:960px){ .shell{ grid-template-columns:1fr; } }
+
+    .card{ background:var(--paper); border:1px solid var(--line); border-radius:14px; box-shadow:0 12px 40px rgba(13,71,161,.06); }
+    .card header{ padding:12px 14px; border-bottom:1px solid #eef2f7; font-weight:700; color:#0d47a1; }
+    .card .body{ padding:14px; }
+
+    .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .row-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field label{ font-size:13px; color:#374151; }
+    .field input, .field textarea{ padding:10px 12px; border:1px solid #cfd8dc; border-radius:10px; background:#fbfdff; font-size:14px; }
+
+    .list{ display:grid; gap:8px; }
+    .item{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; cursor:pointer; background:#fff; }
+    .item:hover{ background:#f5f8ff; }
+    .item .name{ font-weight:700; }
+    .item small{ color:var(--muted); }
+    .muted{ color:var(--muted); font-size:13px; }
+
+    .toolbar{ display:flex; gap:8px; align-items:center; }
+    .btn{ appearance:none; border:1px solid #cfd8dc; background:#fff; color:#123; padding:9px 14px; border-radius:10px; font-size:14px; cursor:pointer; }
+    .btn:hover{ background:#f5f8ff; }
+    .btn-primary{ background:#1967d2; color:#fff; border-color:#1967d2; }
+    .btn-danger{ background:#ffe4e6; border-color:#fecdd3; color:#be123c; }
+    .chip{ display:inline-block; padding:4px 8px; border-radius:999px; border:1px solid #dbe7ff; background:#eef2ff; color:#334155; font-size:12px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV superior -->
+    <header class="topnav">
+    <div class="wrap">
+      <div class="brand">Consultorio</div>
+      <nav>
+        <a href="historia.html" style="background:#0b3a84">Agregar Nuevo Paciente</a>
+        <a href="receta.html">Realizar una Receta</a>
+        <a href="historias-todas.html">Historias Clincas</a>
+        <a href="index.html">Regresar a Pagina web</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <!-- IZQUIERDA: búsqueda + lista -->
+    <aside class="card">
+      <header>Pacientes</header>
+      <div class="body">
+        <div class="row-2">
+          <div class="field">
+            <label for="q">Buscar por nombre</label>
+            <input id="q" type="search" placeholder="Ej.: Apellido o Nombres">
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <div class="toolbar">
+              <button id="btnBuscar" class="btn">Buscar</button>
+              <button id="btnLimpiar" class="btn">Limpiar</button>
+              <span id="badge" class="chip" style="margin-left:auto">0</span>
+            </div>
+          </div>
+        </div>
+        <div id="lista" class="list" style="margin-top:8px">
+          <div class="muted">Use el buscador o cree un nuevo paciente.</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- DERECHA: formulario -->
+    <section class="card">
+      <header style="display:flex; align-items:center; gap:10px;">
+        <div>Historia clínica del día</div>
+        <span id="hoy" class="chip"></span>
+        <span id="estadoSel" class="chip" style="margin-left:auto">Sin selección</span>
+      </header>
+      <div class="body">
+        <div class="toolbar" style="margin-bottom:6px;">
+          <button id="btnNuevo" class="btn">Nuevo</button>
+          <button id="btnGuardar" class="btn btn-primary">Guardar</button>
+          <button id="btnEliminar" class="btn btn-danger">Eliminar paciente</button>
+          <span style="flex:1"></span>
+          <button id="btnIrReceta" class="btn">Ir a Receta</button>
+        </div>
+
+        <!-- Datos mínimos -->
+        <form id="frm" class="row-3">
+          <div class="field">
+            <label for="apPat">Apellido paterno</label>
+            <input id="apPat" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="apMat">Apellido materno</label>
+            <input id="apMat" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="nombres">Nombres</label>
+            <input id="nombres" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="edad">Edad</label>
+            <input id="edad" type="number" min="0" step="1" placeholder="años" />
+          </div>
+        </form>
+
+        <div class="field" style="margin-top:6px;">
+          <label for="historiaHoy">Historia clínica del día</label>
+          <textarea id="historiaHoy" rows="12" placeholder="Escriba aquí la historia de la consulta de hoy..."></textarea>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ==========================================================
+    // API CLIENT – Reemplaza las rutas por tus endpoints reales
+    // ==========================================================
+    const API = {
+      async buscarPacientes(term=''){
+        const url = `/api/pacientes?query=${encodeURIComponent(term||'')}`;
+        try{
+          const r = await fetch(url);
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          const data = await r.json(); // [{id, apPat, apMat, nombres, edad, nombreCompleto}]
+          return Array.isArray(data)?data:[];
+        }catch(e){
+          console.warn('buscarPacientes()', e);
+          return [];
+        }
+      },
+      async obtenerPaciente(id){
+        try{
+          const r = await fetch(`/api/pacientes/${id}`);
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          return await r.json(); // {id, apPat, apMat, nombres, edad, nombreCompleto}
+        }catch(e){
+          console.warn('obtenerPaciente()', e);
+          return null;
+        }
+      },
+      async crearPaciente(p){
+        try{
+          const r = await fetch(`/api/pacientes`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(p)
+          });
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          return await r.json(); // {id, ...}
+        }catch(e){
+          console.warn('crearPaciente()', e);
+          return null;
+        }
+      },
+      async actualizarPaciente(id, p){
+        try{
+          const r = await fetch(`/api/pacientes/${id}`,{
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(p)
+          });
+          return r.ok;
+        }catch(e){
+          console.warn('actualizarPaciente()', e);
+          return false;
+        }
+      },
+      async eliminarPaciente(id){
+        try{
+          const r = await fetch(`/api/pacientes/${id}`,{ method:'DELETE' });
+          return r.ok;
+        }catch(e){
+          console.warn('eliminarPaciente()', e);
+          return false;
+        }
+      },
+      async crearHistoria({pacienteId, fecha, texto}){
+        try{
+          const r = await fetch(`/api/historias`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({pacienteId, fecha, texto})
+          });
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          return await r.json(); // {id}
+        }catch(e){
+          console.warn('crearHistoria()', e);
+          return null;
+        }
+      }
+    };
+
+    // ============== UI & helpers ==============
+    const $ = s=>document.querySelector(s);
+    const qEl = $('#q'), lista = $('#lista'), badge = $('#badge');
+    const apPat = $('#apPat'), apMat = $('#apMat'), nombres = $('#nombres'), edad = $('#edad');
+    const historiaHoy = $('#historiaHoy');
+    const btnNuevo = $('#btnNuevo'), btnGuardar = $('#btnGuardar'),
+          btnEliminar = $('#btnEliminar'), btnIrReceta = $('#btnIrReceta');
+    const hoy = $('#hoy'), estadoSel = $('#estadoSel');
+
+    let currentId = null;
+
+    function yyyymmdd(d=new Date()){
+      const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), da=String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${da}`;
+    }
+
+    function clearForm(){
+      apPat.value=''; apMat.value=''; nombres.value=''; edad.value=''; historiaHoy.value='';
+      currentId=null; estadoSel.textContent='Sin selección';
+    }
+    function fillPersona(p){
+      apPat.value=p.apPat||''; apMat.value=p.apMat||''; nombres.value=p.nombres||''; edad.value=p.edad??'';
+      currentId=p.id; estadoSel.textContent=`Seleccionado #${p.id}`;
+    }
+
+    async function renderLista(term=''){
+      const rows = await API.buscarPacientes(term);
+      badge.textContent = String(rows.length);
+      if(!rows.length){ lista.innerHTML='<div class="muted">No hay resultados.</div>'; return; }
+      rows.sort((a,b)=> (a.apPat||'').localeCompare(b.apPat||'', 'es', {sensitivity:'base'}));
+      lista.innerHTML = rows.map(p=>{
+        const nombre = (p.nombreCompleto || `${p.apPat||''} ${p.apMat||''} ${p.nombres||''}`).replace(/\s+/g,' ').trim();
+        return `<div class="item" data-id="${p.id}">
+          <div class="name">${nombre||'(sin nombre)'}</div>
+          <small>Edad: ${p.edad ?? '—'} años</small>
+        </div>`;
+      }).join('');
+      lista.querySelectorAll('.item').forEach(it=>{
+        it.onclick = async ()=>{
+          const p = await API.obtenerPaciente(it.dataset.id);
+          if(!p) return;
+          fillPersona(p);
+        };
+      });
+    }
+
+    // Wire
+    $('#btnBuscar').onclick = ()=> renderLista(qEl.value.trim());
+    $('#btnLimpiar').onclick = ()=>{ qEl.value=''; renderLista(''); };
+    let t; qEl.addEventListener('input', ()=>{ clearTimeout(t); t=setTimeout(()=>renderLista(qEl.value.trim()), 220); });
+
+    btnNuevo.onclick = ()=> clearForm();
+
+    btnGuardar.onclick = async ()=>{
+      const p = {
+        apPat: apPat.value.trim(),
+        apMat: apMat.value.trim(),
+        nombres: nombres.value.trim(),
+        edad: edad.value ? Number(edad.value) : null
+      };
+      p.nombreCompleto = `${p.apPat} ${p.apMat} ${p.nombres}`.replace(/\s+/g,' ').trim();
+      const texto = historiaHoy.value.trim();
+
+      if(!p.nombres || !p.apPat){ alert('Apellido paterno y Nombres son obligatorios'); return; }
+
+      try{
+        if(!currentId){
+          const creado = await API.crearPaciente(p);
+          if(!creado || !creado.id) throw new Error('crearPaciente');
+          currentId = creado.id;
+          estadoSel.textContent = `Seleccionado #${currentId}`;
+        }else{
+          const ok = await API.actualizarPaciente(currentId, p);
+          if(!ok) throw new Error('actualizarPaciente');
+        }
+
+        if(texto){
+          const h = await API.crearHistoria({ pacienteId: currentId, fecha: yyyymmdd(), texto });
+          if(!h) throw new Error('crearHistoria');
+          historiaHoy.value='';
+        }
+
+        await renderLista(qEl.value.trim());
+        alert('Datos guardados');
+      }catch(e){
+        console.error(e);
+        alert('No se pudo guardar');
+      }
+    };
+
+    btnEliminar.onclick = async ()=>{
+      if(!currentId) return alert('Seleccione un paciente');
+      if(!confirm('¿Eliminar este paciente?')) return;
+      try{
+        const ok = await API.eliminarPaciente(currentId);
+        if(!ok) throw new Error('eliminarPaciente');
+        clearForm(); await renderLista(qEl.value.trim());
+      }catch(e){ alert('No se pudo eliminar'); }
+    };
+
+    btnIrReceta.onclick = ()=> location.href='receta.html';
+
+    (async function init(){
+      hoy.textContent = new Date().toLocaleDateString('es-PE', {day:'2-digit',month:'2-digit',year:'numeric'});
+      try{ if(localStorage.getItem('loggedIn')!=='true') location.href='index.html'; }catch{}
+      await renderLista('');
+    })();
+  </script>
+</body>
+</html>

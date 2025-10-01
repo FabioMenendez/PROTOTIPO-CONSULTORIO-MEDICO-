@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Consultorio — Todas las historias</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="app.css" />
+  <style>
+    :root{ --bg:#f6f7fb; --paper:#fff; --line:#e6e9ef; --brand:#0d47a1; --muted:#6b7280; }
+    body{ margin:0; background:var(--bg); color:#1f2937; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+
+    /* NAV */
+    .topnav{ position:sticky; top:0; z-index:10; background:#0d47a1; color:#fff; padding:10px 14px; box-shadow:0 2px 8px rgba(0,0,0,.15); }
+    .topnav .wrap{ max-width:1040px; margin:0 auto; display:flex; align-items:center; gap:16px; }
+    .topnav .brand{ font-weight:800; }
+    .topnav nav{ margin-left:auto; display:flex; gap:10px; }
+    .topnav a{ color:#dbeafe; text-decoration:none; padding:6px 10px; border-radius:8px; }
+    .topnav a:hover{ background:#0b3a84; }
+
+    /* Layout */
+    .shell{ max-width:1040px; margin:22px auto 30px; padding:0 12px; display:grid; grid-template-columns:320px 1fr; gap:16px; }
+    @media (max-width:960px){ .shell{ grid-template-columns:1fr; } }
+
+    .card{ background:var(--paper); border:1px solid var(--line); border-radius:14px; box-shadow:0 12px 40px rgba(13,71,161,.06); }
+    .card header{ padding:12px 14px; border-bottom:1px solid #eef2f7; font-weight:700; color:#0d47a1; }
+    .card .body{ padding:14px; }
+
+    .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field label{ font-size:13px; color:#374151; }
+    .field input{ padding:10px 12px; border:1px solid #cfd8dc; border-radius:10px; background:#fbfdff; font-size:14px; }
+
+    .btn{ border:1px solid #cfd8dc; background:#fff; color:#123; padding:9px 14px; border-radius:10px; font-size:14px; cursor:pointer; }
+    .btn:hover{ background:#f5f8ff; }
+    .btn-primary{ background:#1967d2; color:#fff; border-color:#1967d2; }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .list{ display:grid; gap:8px; }
+    .item{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; cursor:pointer; background:#fff; }
+    .item:hover{ background:#f5f8ff; }
+    .item .name{ font-weight:700; }
+    .item small{ color:var(--muted); }
+    .muted{ color:var(--muted); font-size:13px; }
+
+    /* Historias (acordeón) */
+    .toolsbar{ display:flex; gap:8px; align-items:center; }
+    .toolsbar .sp{ flex:1; }
+
+    details.entry{ border:1px solid var(--line); border-radius:12px; background:#fff; overflow:hidden; }
+    details.entry + details.entry{ margin-top:10px; }
+    details.entry summary{
+      list-style:none; cursor:pointer;
+      padding:12px 14px; display:flex; align-items:center; gap:10px;
+      background:linear-gradient(0deg,#fff,#fff);
+    }
+    details.entry summary::-webkit-details-marker{ display:none; }
+    .date{ font-weight:700; color:#0d47a1; }
+    .chip{ display:inline-block; padding:4px 8px; border-radius:999px; border:1px solid #dbe7ff; background:#eef2ff; color:#334155; font-size:12px; }
+    .entry .content{ border-top:1px solid #eef2f7; padding:12px 14px; white-space:pre-wrap; line-height:1.5; }
+    .arrow{ margin-left:auto; transition: transform .18s ease; }
+    details[open] .arrow{ transform: rotate(90deg); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+    <header class="topnav">
+    <div class="wrap">
+      <div class="brand">Consultorio</div>
+      <nav>
+        <a href="historia.html">Agregar Nuevo Paciente</a>
+        <a href="receta.html">Realizar una Receta</a>
+        <a href="historias-todas.html" style="background:#0b3a84">Historias Clincas</a>
+        <a href="index.html">Regresar a Pagina web</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <!-- Izquierda: pacientes -->
+    <aside class="card">
+      <header>Pacientes</header>
+      <div class="body">
+        <div class="row-2">
+          <div class="field">
+            <label for="q">Buscar por nombre</label>
+            <input id="q" type="search" placeholder="Ej.: Apellido o Nombres" />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <div class="row-2" style="grid-template-columns:auto auto; gap:8px;">
+              <button id="btnBuscar" class="btn">Buscar</button>
+              <button id="btnLimpiar" class="btn">Limpiar</button>
+            </div>
+          </div>
+        </div>
+        <div id="lista" class="list" style="margin-top:10px">
+          <div class="muted">Use el buscador o seleccione un paciente.</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Derecha: historias del paciente -->
+    <section class="card">
+      <header style="display:flex; align-items:center; gap:10px;">
+        <div id="tituloPaciente">Historias del paciente</div>
+        <span id="badgeCount" class="chip" style="margin-left:auto">0</span>
+      </header>
+      <div class="body">
+        <div class="toolsbar" style="margin-bottom:10px;">
+          <button id="btnExpandir" class="btn">Expandir todo</button>
+          <button id="btnContraer" class="btn">Contraer todo</button>
+          <div class="sp"></div>
+          <button id="btnNueva" class="btn btn-primary" disabled>Realizar nueva historia clínica</button>
+        </div>
+        <div id="detalle">
+          <div class="muted">Seleccione un paciente para ver sus consultas.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ==========================================================
+    //  API CLIENT – Sustituye las rutas por tus endpoints reales
+    // ==========================================================
+    const API = {
+      async buscarPacientes(term=''){
+        // Ej.: GET /api/pacientes?query=term
+        const url = `/api/pacientes?query=${encodeURIComponent(term||'')}`;
+        try{
+          const r = await fetch(url);
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          const data = await r.json(); // [{id, nombreCompleto}]
+          return Array.isArray(data) ? data : [];
+        }catch(e){
+          console.warn('buscarPacientes()', e);
+          return [];
+        }
+      },
+      async obtenerPaciente(id){
+        try{
+          const r = await fetch(`/api/pacientes/${id}`);
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          return await r.json(); // {id, nombreCompleto}
+        }catch(e){
+          console.warn('obtenerPaciente()', e);
+          return null;
+        }
+      },
+      async listarHistorias(pacienteId){
+        // Ej.: GET /api/historias?pacienteId=123
+        try{
+          const r = await fetch(`/api/historias?pacienteId=${encodeURIComponent(pacienteId)}`);
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          const arr = await r.json(); // [{id, fecha, texto}]
+          // ordenar desc por fecha (si backend no lo hace)
+          return (arr||[]).slice().sort((a,b)=>(a.fecha>b.fecha?-1:1));
+        }catch(e){
+          console.warn('listarHistorias()', e);
+          return [];
+        }
+      }
+    };
+
+    // ==================== UI ====================
+    const $ = s=>document.querySelector(s);
+    const qEl = $('#q'), lista = $('#lista'), titulo = $('#tituloPaciente'),
+          detalle = $('#detalle'), badge = $('#badgeCount');
+    const btnBuscar = $('#btnBuscar'), btnLimpiar = $('#btnLimpiar');
+    const btnExpandir = $('#btnExpandir'), btnContraer = $('#btnContraer'), btnNueva = $('#btnNueva');
+
+    let currentPacienteId = null;
+
+    function escapeHTML(s){
+      return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    async function renderLista(term=''){
+      const rows = await API.buscarPacientes(term);
+      if(!rows.length){
+        lista.innerHTML = '<div class="muted">No hay pacientes.</div>';
+        return;
+      }
+      // orden aproximado por nombre (si backend ya ordena, puedes quitarlo)
+      rows.sort((a,b)=> (a.nombreCompleto||'').localeCompare(b.nombreCompleto||'', 'es', {sensitivity:'base'}));
+      lista.innerHTML = rows.map(p=>`
+        <div class="item" data-id="${p.id}">
+          <div class="name">${escapeHTML(p.nombreCompleto || '(sin nombre)')}</div>
+          <small>ID: ${p.id}</small>
+        </div>
+      `).join('');
+      lista.querySelectorAll('.item').forEach(it=>{
+        it.onclick = ()=> cargarPaciente(it.dataset.id);
+      });
+    }
+
+    async function cargarPaciente(id){
+      currentPacienteId = Number(id);
+      btnNueva.disabled = false;
+
+      const p = await API.obtenerPaciente(id);
+      if(!p){
+        titulo.textContent = 'Historias del paciente';
+        detalle.innerHTML = '<div class="muted">Paciente no encontrado.</div>';
+        badge.textContent = '0';
+        return;
+      }
+      titulo.textContent = p.nombreCompleto || 'Paciente';
+
+      const hs = await API.listarHistorias(p.id);
+      badge.textContent = String(hs.length);
+      if(!hs.length){
+        detalle.innerHTML = '<div class="muted">Sin consultas registradas.</div>';
+        return;
+      }
+      detalle.innerHTML = hs.map(h=>`
+        <details class="entry">
+          <summary>
+            <span class="date">${(h.fecha||'').split('-').reverse().join('/')}</span>
+            <span class="chip">ID #${h.id}</span>
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M8 5l8 7-8 7" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <div class="content">${escapeHTML(h.texto||'')}</div>
+        </details>
+      `).join('');
+    }
+
+    // Wire
+    btnBuscar.onclick = ()=> renderLista(qEl.value.trim());
+    btnLimpiar.onclick = ()=>{ qEl.value=''; renderLista(''); };
+
+    let debounce; qEl.addEventListener('input', ()=>{
+      clearTimeout(debounce);
+      debounce = setTimeout(()=> renderLista(qEl.value.trim()), 220);
+    });
+
+    btnExpandir.onclick = ()=> document.querySelectorAll('details.entry').forEach(d=> d.open=true);
+    btnContraer.onclick = ()=> document.querySelectorAll('details.entry').forEach(d=> d.open=false);
+
+    btnNueva.onclick = ()=>{
+      if(!currentPacienteId) return;
+      location.href = `historia.html?patientId=${encodeURIComponent(currentPacienteId)}`;
+    };
+
+    (async function init(){
+      try{ if(localStorage.getItem('loggedIn')!=='true') location.href='index.html'; }catch{}
+      await renderLista('');
+    })();
+  </script>
+</body>
+</html>

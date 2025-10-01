@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Artículo — Hábitos saludables para un corazón fuerte</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Tu hoja global -->
+  <link rel="stylesheet" href="site.css" />
+
+  <!-- Estilos específicos del artículo -->
+  <style>
+    :root{
+      --brand:#0d47a1;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --paper:#ffffff;
+      --line:#e6e9ef;
+      --accent:#1967d2;
+    }
+
+    body{
+      background:#f6f7fb;
+      color:var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    /* NAV ya viene de site.css; sólo aseguramos contraste */
+    .navbar{ box-shadow:0 6px 20px rgba(13,71,161,.08); }
+
+    /* ======= HERO con imagen ======= */
+    .hero-article{
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #0b3a84;
+      color: #fff;
+      min-height: 260px;
+      display: grid;
+      align-items: end;
+      box-shadow: 0 16px 40px rgba(13,71,161,.12);
+      isolation: isolate;
+    }
+    .hero-article .bg{
+      position:absolute; inset:0;
+      background: url(img/bck.jpg) center/cover no-repeat;
+      filter: brightness(.65);
+      transform: scale(1.04);
+      transition: transform .8s ease;
+      z-index:-1;
+    }
+    .hero-article:hover .bg{ transform: scale(1.08); }
+    .hero-article .inner{
+      padding: 26px 20px;
+      backdrop-filter: saturate(120%) blur(1px);
+    }
+    .hero-article h1{
+      margin: 4px 0 6px;
+      font-size: clamp(26px, 4.2vw, 40px);
+      line-height: 1.15;
+      letter-spacing: .2px;
+    }
+    .meta{
+      color:#e3e8ff;
+      font-size: 14px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .meta .badge{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      font-size: 12px;
+    }
+
+    /* ======= CUERPO DEL ARTÍCULO ======= */
+    .article-wrap{
+      max-width: 880px;
+      margin: 18px auto 28px;
+      padding: 0 12px;
+    }
+    .prose{
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 12px 34px rgba(13,71,161,.06);
+      padding: 20px clamp(14px, 3vw, 28px);
+    }
+    .prose p{
+      margin: 0 0 12px;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    .prose .lead{
+      font-size: 19px;
+      color: #374151;
+    }
+    .prose h2, .prose h3{
+      color: var(--brand);
+      margin: 14px 0 8px;
+      line-height: 1.25;
+    }
+    .prose h3{
+      font-size: 20px;
+    }
+    .muted{ color: var(--muted); }
+
+    /* Imagen ilustrativa dentro del artículo */
+    figure.hero-fig{
+      margin: 10px 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background:#fff;
+      box-shadow: 0 10px 26px rgba(31,41,55,.10);
+    }
+    figure.hero-fig img{
+      display:block;
+      width:100%;
+      height: clamp(280px, 32vw, 360px);
+      object-fit: cover;
+    }
+    figure.hero-fig figcaption{
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      background: #fafbff;
+      border-top: 1px solid var(--line);
+    }
+
+    /* Botón volver */
+    .actions{
+      display:flex; justify-content:flex-start; margin-top: 6px;
+    }
+    .btn{
+      appearance:none; cursor:pointer;
+      border:1px solid var(--line);
+      background:#fff;
+      color:#0d224f;
+      padding:10px 14px; border-radius: 10px;
+      font-size:14px;
+      transition: transform .08s ease, box-shadow .2s ease, background .15s ease;
+      box-shadow: 0 2px 10px rgba(13,71,161,.08);
+      text-decoration: none;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{ background:#f5f8ff; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(13,71,161,.12); }
+
+    /* Aparición suave */
+    .reveal { opacity:0; transform: translateY(12px); transition: all .5s ease; }
+    .reveal.show { opacity:1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="navbar">
+    <div class="wrap">
+      <div class="brand">Dr. Constantino Domínguez Barrera</div>
+      <nav class="nav">
+        <a href="index.html#portada">Portada</a>
+        <a class="btn-cta" href="index2.html">Consultorio virtual</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-wrap">
+    <!-- HERO -->
+    <section class="hero-article reveal">
+      <div class="bg" aria-hidden="true"></div>
+      <div class="inner">
+        <div class="meta">
+          <span class="badge">Salud & Prevención</span>
+          <span>Publicado: 2025-09-01</span>
+        </div>
+        <h1>Hábitos saludables para un corazón fuerte</h1>
+      </div>
+    </section>
+
+    <!-- CUERPO -->
+    <section class="prose reveal" style="margin-top:12px">
+      <!-- Imagen ilustrativa dentro del artículo (puedes cambiar la ruta) -->
+      <figure class="hero-fig">
+        <img src="img/A1.jpg" alt="Ilustración de un corazón saludable y actividad física" />
+        <figcaption>Un estilo de vida activo y una alimentación basada en alimentos reales son pilares de la salud cardiovascular.</figcaption>
+      </figure>
+
+      <p class="lead">
+        La salud cardiovascular depende de múltiples factores, muchos de ellos modificables.
+        Adoptar hábitos saludables impacta de forma directa en la presión arterial, el colesterol y el control del peso.
+      </p>
+
+      <h3>1) Moverse todos los días</h3>
+      <p>
+        Al menos 150 minutos semanales de actividad aeróbica moderada (caminar rápido, bicicleta, nadar).
+        Si estás comenzando, inicia con 10–15 minutos diarios y progresa.
+      </p>
+
+      <h3>2) Alimentación basada en alimentos reales</h3>
+      <p>
+        Prioriza frutas, verduras, legumbres, granos integrales y proteínas magras.
+        Reduce azúcares añadidos y ultraprocesados. Mantén una hidratación adecuada.
+      </p>
+
+      <h3>3) Descanso y manejo del estrés</h3>
+      <p>
+        Dormir 7–8 horas y practicar técnicas de respiración o meditación mejora la presión arterial y el bienestar general.
+        También ayuda a sostener la adherencia a los cambios de estilo de vida.
+      </p>
+
+      <p class="muted">Este contenido tiene fines informativos y no reemplaza la consulta médica.</p>
+
+      <div class="actions">
+        <a class="btn" href="index.html#articulos">← Volver a artículos</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Animación de aparición simple -->
+  <script>
+    const onReveal = () => {
+      const els = document.querySelectorAll('.reveal');
+      els.forEach(el=>{
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 80) el.classList.add('show');
+      });
+    };
+    document.addEventListener('scroll', onReveal, {passive:true});
+    window.addEventListener('load', onReveal);
+  </script>
+</body>
+</html>

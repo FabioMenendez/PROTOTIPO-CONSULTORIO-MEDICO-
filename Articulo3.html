@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Artículo — Alimentación consciente: por dónde empezar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Hoja global -->
+  <link rel="stylesheet" href="site.css" />
+
+  <style>
+    :root{
+      --brand:#0d47a1;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --paper:#ffffff;
+      --line:#e6e9ef;
+    }
+    body{ background:#f6f7fb; color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+    .navbar{ box-shadow:0 6px 20px rgba(13,71,161,.08); }
+
+    /* HERO */
+    .hero-article{
+      position: relative;
+      border-radius: 16px;
+      overflow:hidden;
+      background:#0b3a84;
+      min-height:260px;
+      color:#fff;
+      display:grid;
+      align-items:end;
+      box-shadow:0 16px 40px rgba(13,71,161,.12);
+      isolation:isolate;
+    }
+    .hero-article .bg{
+      position:absolute; inset:0;
+      background:url(img/bck.jpg) center/cover no-repeat;
+      filter:brightness(.65);
+      transform:scale(1.04);
+      transition:transform .8s ease;
+      z-index:-1;
+    }
+    .hero-article:hover .bg{ transform:scale(1.08); }
+    .hero-article .inner{ padding:26px 20px; backdrop-filter:saturate(120%) blur(1px); }
+    .hero-article h1{ margin:4px 0 6px; font-size:clamp(26px,4.2vw,40px); line-height:1.15; }
+    .meta{ font-size:14px; display:flex; gap:10px; flex-wrap:wrap; }
+    .meta span{ background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); padding:2px 8px; border-radius:999px; }
+
+    /* CUERPO */
+    .article-wrap{ max-width:880px; margin:18px auto 28px; padding:0 12px; }
+    .prose{
+      background:var(--paper); border:1px solid var(--line);
+      border-radius:16px; padding:20px clamp(14px,3vw,28px);
+      box-shadow:0 12px 34px rgba(13,71,161,.06);
+    }
+    .prose p{ margin:0 0 12px; font-size:17px; line-height:1.7; }
+    .prose h3{ margin:14px 0 8px; color:var(--brand); }
+    .prose ul{ margin:0 0 14px 18px; }
+    .prose li{ margin:6px 0; }
+    .muted{ color:var(--muted); }
+
+    /* Imagen ilustrativa */
+    figure.hero-fig{
+      margin:10px 0 16px; border:1px solid var(--line);
+      border-radius:14px; overflow:hidden;
+      box-shadow:0 10px 26px rgba(31,41,55,.10);
+    }
+    figure.hero-fig img{ width:100%; height:clamp(280px,32vw,360px); object-fit:cover; display:block; }
+    figure.hero-fig figcaption{ padding:8px 12px; font-size:13px; color:var(--muted); background:#fafbff; }
+
+    /* Botón */
+    .actions{ margin-top:8px; }
+    .btn{ border:1px solid var(--line); border-radius:10px; padding:10px 14px;
+          background:#fff; color:#0d224f; text-decoration:none;
+          box-shadow:0 2px 10px rgba(13,71,161,.08); transition:.2s; }
+    .btn:hover{ background:#f5f8ff; box-shadow:0 8px 18px rgba(13,71,161,.12); }
+
+    /* Animación */
+    .reveal{ opacity:0; transform:translateY(12px); transition:all .5s ease; }
+    .reveal.show{ opacity:1; transform:translateY(0); }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="navbar">
+    <div class="wrap">
+      <div class="brand">Dr. Constantino Domínguez Barrera</div>
+      <nav class="nav">
+        <a href="index.html#portada">Portada</a>
+        <a class="btn-cta" href="index2.html">Consultorio virtual</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-wrap">
+    <!-- HERO -->
+    <section class="hero-article reveal">
+      <div class="bg" aria-hidden="true"></div>
+      <div class="inner">
+        <div class="meta"><span>Nutrición</span><span>Publicado: 2025-07-20</span></div>
+        <h1>Alimentación consciente: por dónde empezar</h1>
+      </div>
+    </section>
+
+    <!-- CUERPO -->
+    <section class="prose reveal" style="margin-top:12px">
+      <figure class="hero-fig">
+        <img src="img/A3.jpg" alt="Comida saludable con frutas y verduras frescas" />
+        <figcaption>La alimentación consciente fomenta una relación equilibrada con los alimentos.</figcaption>
+      </figure>
+
+      <p>La alimentación consciente busca reconectar con las señales de hambre y saciedad, disfrutando la comida sin culpa ni prisa.</p>
+
+      <h3>Primeros pasos</h3>
+      <ul>
+        <li>Planifica comidas simples para no improvisar con ultraprocesados.</li>
+        <li>Come sin pantallas y mastica despacio.</li>
+        <li>Incluye agua y verduras en cada plato.</li>
+      </ul>
+
+      <h3>Progreso sostenible</h3>
+      <p>Enfócate en pequeños cambios constantes. La consistencia supera a la perfección.</p>
+
+      <p class="muted">Este contenido tiene fines informativos y no reemplaza la consulta médica.</p>
+
+      <div class="actions">
+        <a class="btn" href="index.html#articulos">← Volver a artículos</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const reveal = () => {
+      document.querySelectorAll('.reveal').forEach(el=>{
+        const rect=el.getBoundingClientRect();
+        if(rect.top < window.innerHeight-80) el.classList.add('show');
+      });
+    };
+    document.addEventListener('scroll', reveal, {passive:true});
+    window.addEventListener('load', reveal);
+  </script>
+</body>
+</html>

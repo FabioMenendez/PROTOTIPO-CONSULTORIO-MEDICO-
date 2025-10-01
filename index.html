@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Dr. Constantino Domínguez Barrera — Sitio oficial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* Ajustes adicionales */
+    .bio{
+      display:grid; grid-template-columns: 1fr 2fr; gap:18px; align-items:center;
+    }
+    .bio img{
+      width:100%; border-radius:14px; box-shadow:0 8px 20px rgba(0,0,0,.15);
+    }
+
+    /* Reconocimientos */
+    .awards{
+      display:flex; gap:16px; overflow-x:auto; padding:10px; scroll-snap-type:x mandatory;
+    }
+    .awards::-webkit-scrollbar{ height:8px; }
+    .awards::-webkit-scrollbar-thumb{ background:#cfd8dc; border-radius:6px; }
+    .award{
+      flex:0 0 280px; scroll-snap-align:center;
+      background:#fff; border:1px solid #e6e9ef; border-radius:14px;
+      box-shadow:0 12px 26px rgba(13,71,161,.08);
+      overflow:hidden; transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .award:hover{ transform:translateY(-6px); box-shadow:0 16px 34px rgba(13,71,161,.12); }
+    .award img{ width:100%; height:180px; object-fit:cover; }
+    .award-body{ padding:12px; }
+    .award-body h3{ margin:0 0 6px; font-size:16px; color:#0d47a1; }
+    .award-body p{ margin:0; font-size:14px; color:#374151; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="wrap">
+      <div class="brand">Dr. Constantino Domínguez Barrera</div>
+      <nav class="nav">
+        <a class="btn-cta" href="index2.html">Consultorio virtual</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+
+    <!-- PORTADA (CARRUSEL) -->
+    <section id="portada" class="section reveal">
+      <div class="carousel">
+        <div class="slide active">
+          <div>
+            <h1>Atención médica con calidez humana</h1>
+            <p>Médico cirujano con experiencia en atención integral y seguimiento del paciente.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <div>
+            <h1>Prevención, diagnóstico y tratamiento</h1>
+            <p>Enfoque personalizado y basado en evidencia científica.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <div>
+            <h1>Agenda disponible</h1>
+            <p>Lunes, Miércoles y Viernes — 4:00 p.m. a 8:00 p.m.</p>
+          </div>
+        </div>
+        <div class="dots">
+          <button class="dot active" aria-label="Slide 1"></button>
+          <button class="dot" aria-label="Slide 2"></button>
+          <button class="dot" aria-label="Slide 3"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORIA -->
+    <section id="historia" class="section reveal" style="margin-top:16px;">
+      <header><h2>Historia</h2></header>
+      <div class="body history bio">
+        <img src="img/dcotor.jpg" alt="Foto del Dr. Constantino Domínguez" />
+        <div>
+          <p class="lead"><strong>Dr. Constantino Domínguez Barrera</strong> es médico cirujano con más de cinco décadas de trayectoria profesional, tanto en el ámbito clínico como docente.</p>
+          <p>Se formó en la Universidad Nacional Mayor de San Marcos y ha sido protagonista en procesos clave de salud pública en el Perú, incluyendo programas de vacunación, planificación sanitaria y proyectos de agua potable rural. Como docente universitario, ha promovido la formación integral de profesionales de la salud basada en el enfoque de <em>One Health</em> y la medicina social.</p>
+          <p>Actualmente combina su práctica clínica con la escritura de artículos académicos y de divulgación para fortalecer la salud pública en el país.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECONOCIMIENTOS -->
+    <section id="reconocimientos" class="section reveal" style="margin-top:16px;">
+      <header><h2>Reconocimientos</h2></header>
+      <div class="body">
+        <div class="awards">
+          <div class="award">
+            <img src="img/diploma.jpg" alt="Reconocimiento 1">
+            <div class="award-body">
+              <h3>Medalla al Mérito Médico</h3>
+              <p>Otorgada por el Colegio Médico del Perú por su destacada trayectoria en salud pública.</p>
+            </div>
+          </div>
+          <div class="award">
+            <img src="img/diploma.jpg" alt="Reconocimiento 2">
+            <div class="award-body">
+              <h3>Reconocimiento docente</h3>
+              <p>Premio de la Facultad de Medicina por más de 40 años de docencia universitaria.</p>
+            </div>
+          </div>
+          <div class="award">
+            <img src="img/diploma.jpg" alt="Reconocimiento 3">
+            <div class="award-body">
+              <h3>Distinción internacional</h3>
+              <p>Reconocimiento por la OPS/OMS por su aporte a la educación médica en América Latina.</p>
+            </div>
+          </div>
+          <div class="award">
+            <img src="img/diploma.jpg" alt="Reconocimiento 4">
+            <div class="award-body">
+              <h3>Distinción internacional</h3>
+              <p>Reconocimiento por la OPS/OMS por su aporte a la educación médica en América Latina.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTÍCULOS PUBLICADOS -->
+    <section id="articulos" class="section reveal" style="margin-top:16px;">
+      <header><h2>Artículos publicados</h2></header>
+      <div class="body">
+        <div class="grid3">
+          <article class="card">
+            <div class="thumb">SALUD & PREVENCIÓN</div>
+            <div class="card-body">
+              <h3>Hábitos saludables para un corazón fuerte</h3>
+              <p>Guía práctica con medidas sencillas para reducir el riesgo cardiovascular en el día a día.</p>
+              <div class="meta">Publicado: 2025-09-01</div>
+              <div class="actions"><a class="btn btn-primary" href="Articulo1.html">Leer más</a></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">VACUNAS</div>
+            <div class="card-body">
+              <h3>Vacunación del adulto: dudas frecuentes</h3>
+              <p>Lo esencial sobre refuerzos, indicaciones y seguridad de vacunas en adultos.</p>
+              <div class="meta">Publicado: 2025-08-18</div>
+              <div class="actions"><a class="btn btn-primary" href="Articulo2.html">Leer más</a></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">NUTRICIÓN</div>
+            <div class="card-body">
+              <h3>Alimentación consciente: por dónde empezar</h3>
+              <p>Consejos simples para organizar tus comidas y mejorar tu energía diaria.</p>
+              <div class="meta">Publicado: 2025-07-20</div>
+              <div class="actions"><a class="btn btn-primary" href="Articulo3.html">Leer más</a></div>
+            </div>
+          </article>
+        </div>
+        <p class="center" style="margin-top:10px; color:var(--muted);">* Más publicaciones próximamente.</p>
+      </div>
+    </section>
+
+    <!-- MI CONSULTORIO -->
+    <section id="consultorio" class="section reveal" style="margin-top:16px; margin-bottom:24px;">
+      <header><h2>Mi consultorio</h2></header>
+      <div class="body">
+        <div style="display:grid; grid-template-columns:1.2fr 2fr; gap:16px;">
+          <div>
+            <p><strong>Dirección:</strong> Av. Perú 3885, San Martín de Porres</p>
+            <p><strong>Teléfono:</strong> +51 957 375 513</p>
+            <p><strong>Atención:</strong> Lunes, Miércoles y Viernes — 4:00 p.m. a 8:00 p.m.</p>
+          </div>
+          <div class="map">
+            <iframe
+              title="Ubicación del consultorio"
+              width="100%" height="100%" style="border:0"
+              loading="lazy" allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.1858959986935!2d-77.09383978887253!3d-12.030719688155637!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105cea5317edd35%3A0x8f3ded8366770f71!2sAv.%20Per%C3%BA%203885%2C%20San%20Mart%C3%ADn%20de%20Porres%2015106!5e0!3m2!1ses-419!2spe!4v1759295973142!5m2!1ses-419!2spe">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="site.js"></script>
+</body>
+</html>

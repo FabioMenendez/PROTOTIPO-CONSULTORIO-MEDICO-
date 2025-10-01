@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Consultorio — Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root{
+      /* Paleta del consultorio */
+      --bg:#f6f7fb;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --brand:#0d47a1;     /* azul principal */
+      --brand-2:#1967d2;   /* azul secundario */
+      --paper:#ffffff;
+      --edge:#e6e9ef;
+      --shine: rgba(25,103,210,.18);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:
+        radial-gradient(900px 450px at 12% -10%, #e6f0ff 0%, transparent 60%),
+        radial-gradient(900px 450px at 88% -20%, #e9f3ff 0%, transparent 62%),
+        var(--bg);
+      color:var(--ink);
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* Motas sutiles */
+    .dots{
+      position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.25;
+      background:
+        radial-gradient(1.6px 1.6px at 20% 30%, #8fb3ff 40%, transparent 41%),
+        radial-gradient(1.4px 1.4px at 70% 22%, #a9c8ff 40%, transparent 41%),
+        radial-gradient(1.2px 1.2px at 45% 78%, #b7d1ff 40%, transparent 41%),
+        radial-gradient(1.2px 1.2px at 86% 70%, #a1c0ff 40%, transparent 41%),
+        radial-gradient(1.2px 1.2px at 55% 55%, #9bbdff 40%, transparent 41%);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{opacity:.22} 50%{opacity:.33}
+    }
+
+    /* Contenedor */
+    .wrap{
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: clamp(18px, 4vw, 32px);
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Cabecera estilo tarjeta */
+    .hero{
+      width:100%;
+      background: linear-gradient(180deg, #ffffffcc, #ffffff);
+      border:1px solid var(--edge);
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(13,71,161,.10);
+      padding: clamp(18px, 4vw, 28px);
+      display: grid; gap: 10px;
+      animation: drop .6s cubic-bezier(.2,.7,.2,1) both;
+    }
+    @keyframes drop{
+      from{ transform: translateY(12px); opacity:.0 } to{ transform:none; opacity:1 }
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px; color:var(--brand);
+      font-weight:800; letter-spacing:.3px;
+    }
+    .badge{
+      margin-left:8px;
+      font-size:12px; padding:5px 10px; border-radius:999px;
+      background:#e9f2ff; color:#0d47a1; border:1px solid #cfe0ff;
+    }
+    h1{
+      margin:6px 0 0; font-size: clamp(22px, 3.2vw, 30px);
+      font-weight: 800; letter-spacing:.2px; color: #0b3a84;
+    }
+    .subtitle{ margin:0; color:var(--muted); font-size:14.5px; }
+
+    /* Tarjetas acciones */
+    .grid{
+      margin-top: 14px;
+      display:grid; gap:14px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      position:relative; isolation:isolate; overflow:hidden;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid var(--edge);
+      border-radius: 14px;
+      padding: 18px;
+      text-decoration:none;
+      color: inherit;
+      box-shadow: 0 10px 26px rgba(25,103,210,.08);
+      transform: translateY(6px);
+      opacity:.0;
+      animation: rise .6s cubic-bezier(.2,.7,.2,1) both;
+    }
+    .card:nth-child(1){ animation-delay:.06s }
+    .card:nth-child(2){ animation-delay:.12s }
+    .card:nth-child(3){ animation-delay:.18s }
+
+    @keyframes rise{
+      to{ transform: translateY(0); opacity:1; }
+    }
+
+    .card::before{
+      content:""; position:absolute; inset:-1px; z-index:-1;
+      background: radial-gradient(220px 120px at var(--mx,50%) 0%, var(--shine), transparent 60%);
+      opacity:0; transition: opacity .25s ease;
+    }
+    .card:hover::before{ opacity:1; }
+    .card:hover{ transform: translateY(-3px); box-shadow: 0 16px 36px rgba(25,103,210,.15); }
+
+    .icon{
+      width:44px; height:44px; border-radius:12px;
+      display:grid; place-items:center; font-size:22px; color:#fff;
+      background: linear-gradient(145deg, var(--brand-2), #3b82f6);
+      box-shadow: 0 10px 20px rgba(25,103,210,.25);
+    }
+    .card h3{ margin:10px 0 4px; font-size:18px; letter-spacing:.2px; color:#0d47a1; }
+    .card p{ margin:0; color:var(--muted); font-size:14px; }
+
+    .cta{ margin-top:14px }
+    .btn{
+      appearance:none; border:1px solid #cfe0ff;
+      background: linear-gradient(180deg, #e9f2ff, #dff0ff);
+      color:#0d47a1; font-weight:700;
+      padding:10px 14px; border-radius:10px; cursor:pointer;
+      transition: transform .14s ease, box-shadow .14s ease, background .2s ease;
+      text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+      box-shadow: 0 6px 16px rgba(13,71,161,.12);
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(13,71,161,.18); }
+    .btn:active{ transform:none }
+
+    .foot{
+      margin-top: 14px; color:#6b7c96; font-size:12px; text-align:center;
+    }
+
+    /* Accesibilidad: reducir movimiento */
+    @media (prefers-reduced-motion: reduce){
+      .dots,.card,.hero{ animation:none !important }
+      .card{ opacity:1; transform:none }
+    }
+  </style>
+</head>
+<body>
+  <div class="dots"></div>
+
+  <main class="wrap">
+    <section class="hero" aria-label="Panel principal">
+      <div class="brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 12h18M12 3v18" stroke="#0d47a1" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Consultorio · Dr. Constantino Domínguez</span>
+        <span class="badge">Panel</span>
+      </div>
+
+      <h1>¿Qué desea realizar hoy, Doctor?</h1>
+      <p class="subtitle">Seleccione una opción para continuar. Puede volver en cualquier momento.</p>
+
+      <div class="grid" role="list">
+        <a class="card" href="historia.html" role="listitem" onmousemove="glow(event)" onmouseleave="unGlow(event)">
+          <div class="icon">➕</div>
+          <h3>Añadir paciente nuevo</h3>
+          <p>Registrar y escribir la historia clínica del día.</p>
+          <div class="cta">
+            <span class="btn">Continuar →</span>
+          </div>
+        </a>
+
+        <a class="card" href="receta.html" role="listitem" onmousemove="glow(event)" onmouseleave="unGlow(event)">
+          <div class="icon">💊</div>
+          <h3>Realizar una receta</h3>
+          <p>Escriba la receta con el editor y envíe a impresión.</p>
+          <div class="cta">
+            <span class="btn">Continuar →</span>
+          </div>
+        </a>
+
+        <a class="card" href="historia.html" role="listitem" onmousemove="glow(event)" onmouseleave="unGlow(event)">
+          <div class="icon">📚</div>
+          <h3>Ver historias clínicas</h3>
+          <p>Revise consultas previas por paciente y fecha.</p>
+          <div class="cta">
+            <span class="btn">Continuar →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="foot">© <span id="y"></span> Consultorio — Uso interno</div>
+    </section>
+  </main>
+
+  <script>
+    // Año en el pie
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Iluminación que sigue al mouse (en tonos de la marca)
+    function glow(e){
+      const card = e.currentTarget;
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      card.style.setProperty('--mx', x + '%');
+    }
+    function unGlow(e){
+      e.currentTarget.style.removeProperty('--mx');
+    }
+  </script>
+</body>
+</html>

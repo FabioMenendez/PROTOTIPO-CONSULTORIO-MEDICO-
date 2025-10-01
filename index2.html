@@ -1,0 +1,180 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Consultorio — Iniciar sesión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="app.css" />
+  <style>
+    /* Ajustes suaves para el login */
+    body{ background:#f6f7fb; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+    .login-wrap{ display:grid; place-items:center; min-height:100dvh; padding:16px; }
+    .login-card{ max-width:560px; width:100%; border:1px solid #e6e9ef; border-radius:16px; background:#fff; box-shadow:0 14px 40px rgba(13,71,161,.08); overflow:hidden; }
+    .login-hero{ background:linear-gradient(90deg,#0d47a1,#1e88e5); color:#fff; padding:22px; }
+    .brand{ font-weight:800; font-size:22px; letter-spacing:.2px; }
+    .subtitle{ opacity:.92; }
+    .form{ padding:18px; display:grid; gap:12px; }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field label{ font-size:13px; color:#374151; }
+    .input{ padding:11px 12px; border:1px solid #cfd8dc; border-radius:10px; background:#fbfdff; font-size:15px; }
+    .row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .muted{ color:#6b7280; font-size:13px; }
+    .error{ color:#b00020; font-size:13px; display:none; }
+    .error.show{ display:block; }
+    .btn{ padding:10px 14px; border-radius:10px; border:1px solid #cfd8dc; background:#fff; cursor:pointer; }
+    .btn:hover{ background:#f5f8ff; }
+    .btn-primary{ background:#1967d2; border-color:#1967d2; color:#fff; }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed; }
+    /* Botón de herramientas flotante */
+    .tools{ position:fixed; right:18px; top:14px; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card" role="region" aria-label="Formulario de inicio de sesión">
+      <div class="login-hero">
+        <div class="brand">Consultorio</div>
+        <div class="subtitle">Escritorio · Dr. Constantino Domínguez Barrera</div>
+      </div>
+
+      <form id="frmLogin" class="form" novalidate>
+        <div style="text-align:center">
+          <h3 style="margin:6px 0 2px">Bienvenido, Doctor</h3>
+          <p class="muted" style="margin:0 0 8px">Ingrese sus credenciales para continuar</p>
+        </div>
+
+        <div class="field">
+          <label for="usuario">Usuario (correo)</label>
+          <input id="usuario" name="usuario" type="email" class="input" placeholder="doctor@consultorio.pe" autocomplete="username" required />
+        </div>
+
+        <div class="field">
+          <label for="clave">Contraseña</label>
+          <div style="position:relative">
+            <input id="clave" name="clave" type="password" class="input" placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" id="toggleClave" class="btn" style="position:absolute; right:6px; top:6px; padding:6px 10px;">Mostrar</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="muted" style="display:flex; align-items:center; gap:8px;">
+            <input id="recordar" type="checkbox" /> Recordarme en este equipo
+          </label>
+          <a class="muted" href="#" onclick="alert('Recuperación de clave: integrar con backend'); return false;">¿Olvidó su clave?</a>
+        </div>
+
+        <p id="msgError" class="error" role="alert">Usuario o contraseña incorrectos.</p>
+
+        <div class="row" style="margin-top:4px">
+          <button id="btnEntrar" type="submit" class="btn btn-primary">Iniciar sesión</button>
+          <button id="btnDemo" type="button" class="btn">Entrar (demo)</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Botón herramientas -->
+    <div class="tools no-print">
+      <details>
+        <summary class="btn">⚙︎ Herramientas</summary>
+        <div class="card" style="margin-top:8px; padding:10px; border:1px solid #e6e9ef; border-radius:12px; background:#fff;">
+          <p class="muted" style="margin:0 0 8px">Se integrará cuando esté el backend</p>
+          <div class="row">
+            <button id="btnImport" class="btn">Importar JSON</button>
+            <button id="btnExport" class="btn">Exportar JSON</button>
+            <input id="fileJson" type="file" accept="application/json" hidden />
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const usuario = $('#usuario');
+    const clave = $('#clave');
+    const recordar = $('#recordar');
+    const msgError = $('#msgError');
+    const btnEntrar = $('#btnEntrar');
+    const btnDemo = $('#btnDemo');
+
+    // Mostrar / ocultar contraseña
+    $('#toggleClave').addEventListener('click', function(){
+      const isPass = clave.type === 'password';
+      clave.type = isPass ? 'text' : 'password';
+      this.textContent = isPass ? 'Ocultar' : 'Mostrar';
+      clave.focus();
+    });
+
+    // Cargar "recordarme"
+    try{
+      const savedUser = localStorage.getItem('login_user');
+      if(savedUser){ usuario.value = savedUser; recordar.checked = true; }
+    }catch{}
+
+    // Validación de DEMO (reemplazar cuando tengas backend):
+    // Acepta: usuario: doctor@consultorio.pe  contraseña: 123456
+    function validarLocal(u, p){
+      const ok = (u.trim().toLowerCase() === 'doctor@consultorio.pe' && p === '123456');
+      return new Promise(res => setTimeout(()=> res(ok), 600)); // simula latencia
+    }
+
+    async function doLogin(u, p){
+      msgError.classList.remove('show');
+      btnEntrar.disabled = true; btnEntrar.textContent = 'Entrando…';
+
+      try{
+        // Aquí reemplaza por llamada real a tu API:
+        // const r = await fetch('/api/login',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:u, password:p})});
+        // const ok = r.ok;
+        const ok = await validarLocal(u, p);
+
+        if(!ok){
+          msgError.textContent = 'Usuario o contraseña incorrectos.';
+          msgError.classList.add('show');
+          return;
+        }
+
+        // Recordarme
+        try{
+          if(recordar.checked) localStorage.setItem('login_user', u);
+          else localStorage.removeItem('login_user');
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('loggedAt', String(Date.now()));
+        }catch{}
+
+        // Redirigir al dashboard del consultorio
+        location.href = 'dashboard.html';
+      }catch(e){
+        msgError.textContent = 'No se pudo iniciar sesión. Verifique su conexión.';
+        msgError.classList.add('show');
+      }finally{
+        btnEntrar.disabled = false; btnEntrar.textContent = 'Iniciar sesión';
+      }
+    }
+
+    // Enviar formulario
+    $('#frmLogin').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const u = usuario.value.trim();
+      const p = clave.value;
+      if(!u || !p){
+        msgError.textContent = 'Complete usuario y contraseña.';
+        msgError.classList.add('show');
+        return;
+      }
+      doLogin(u,p);
+    });
+
+    // Botón Demo (salta validación)
+    btnDemo.addEventListener('click', ()=>{
+      try{ localStorage.setItem('loggedIn','true'); }catch{}
+      location.href = 'dashboard.html';
+    });
+
+    // Placeholders de herramientas
+    $('#btnImport').onclick = ()=> $('#fileJson').click();
+    $('#fileJson').onchange = () => alert('Importar: pendiente de backend');
+    $('#btnExport').onclick = () => alert('Exportar: pendiente de backend');
+  </script>
+</body>
+</html>
