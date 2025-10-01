@@ -1,4 +1,4 @@
-# 🌐 Consultorio Virtual — Dr. Constantino Domínguez Barrera
+#  Consultorio Virtual — Dr. Constantino Domínguez Barrera
 
 Este proyecto corresponde a una **aplicación web** que incluye:
 
@@ -19,13 +19,13 @@ Este proyecto corresponde a una **aplicación web** que incluye:
 
 ---
 
-## 🚧 Estado actual
+##  Estado actual
 Actualmente el proyecto contiene **solo el frontend** (HTML, CSS y JavaScript).  
 El almacenamiento local fue eliminado para preparar la migración a un **backend con base de datos real (MySQL + API REST)**.  
 
 ---
 
-## 🛠 Tecnologías utilizadas
+##  Tecnologías utilizadas
 - **Frontend:**  
   - HTML5  
   - CSS3 (animaciones, flexbox y grid)  
@@ -38,7 +38,7 @@ El almacenamiento local fue eliminado para preparar la migración a un **backend
 
 ---
 
-## 📑 Páginas principales
+## Páginas principales
 - `index.html` → Sitio oficial (portada, biografía, reconocimientos, artículos, consultorio).  
 - `articulo1.html` → Artículo 1
 - `articulo2.html` → Artículo 2
@@ -51,7 +51,7 @@ El almacenamiento local fue eliminado para preparar la migración a un **backend
 
 ---
 
-## 📌 Próximos pasos
+## Próximos pasos
 1. Desarrollar un **backend** con Node.js + Express.  
 2. Conectar a **MySQL** (ej. usando MySQL Workbench).  
 3. Crear **API REST** para pacientes, historias clínicas, recetas y artículos.  
@@ -61,4 +61,4 @@ El almacenamiento local fue eliminado para preparar la migración a un **backend
 
 ---
 
-✍️ Proyecto en desarrollo — **esta versión es únicamente frontend**.
+ Proyecto en desarrollo — **esta versión es únicamente frontend**.
